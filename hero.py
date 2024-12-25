@@ -2,7 +2,6 @@ import os
 import sys
 import pygame
 
-
 size = width, height = 500, 500
 screen = pygame.display.set_mode(size)
 
@@ -24,10 +23,11 @@ def load_image(name, colorkey=None):
 
 
 class Hero(pygame.sprite.Sprite):
-    image = load_image('hero.png')
+    image = load_image('pig.jpg')
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
+        Hero.image = pygame.transform.scale(Hero.image, (64, 64))
         self.hero_image = Hero.image
         self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x

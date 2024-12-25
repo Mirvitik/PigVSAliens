@@ -25,10 +25,11 @@ def load_image(name, colorkey=None):
 
 
 class Cell(pygame.sprite.Sprite):
-    image = load_image('cell.png')
+    image = load_image('grass.png')
 
     def __init__(self, group, x, y):
         super().__init__(group)
+        Cell.image = pygame.transform.scale(Cell.image, (64, 64))
         self.cell_image = Cell.image
         self.rect = self.cell_image.get_rect()
         self.rect.x = x

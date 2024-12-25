@@ -20,7 +20,7 @@ def load_image(name, colorkey=None):
 
 
 class Alien(pygame.sprite.Sprite):
-    image = load_image('alien.png')
+    image = load_image('alien3.jpg')
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
