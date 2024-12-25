@@ -1,4 +1,5 @@
 from hero import Hero
+from alien import Alien
 import os
 import sys
 import pygame
@@ -51,6 +52,8 @@ class Board:
                 Cell(self.all_sprites, x * self.cell_size, y * self.cell_size)
                 if self.board[y][x] == 1:
                     Hero(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 2:
+                    Alien(self.all_sprites, x, y, self.cell_size)
 
     def where_hero(self):
         for y in range(self.height):

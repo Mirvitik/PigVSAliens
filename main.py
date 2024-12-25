@@ -12,6 +12,8 @@ pygame.init()
 all_sprites = pygame.sprite.Group()
 board = Board(screen, all_sprites)
 board.board[0][0] = 1
+board.board[1][1] = 2
+board.board[4][5] = 2
 hero = Hero(all_sprites, 0, 0, 50)
 running = True
 while running:
@@ -21,23 +23,43 @@ while running:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
             hero_x, hero_y = board.where_hero()
             if hero_y != 0:
-                board.board[hero_y][hero_x] = 0
-                board.board[hero_y - 1][hero_x] = 1
+                if board.board[hero_y - 1][hero_x] != 2:
+                    board.board[hero_y][hero_x] = 0
+                    board.board[hero_y - 1][hero_x] = 1
+                else:
+                    print('Вы проиграли')
+                    running = False
+                    break
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
             hero_x, hero_y = board.where_hero()
             if hero_x != 0:
-                board.board[hero_y][hero_x] = 0
-                board.board[hero_y][hero_x - 1] = 1
+                if board.board[hero_y][hero_x - 1] != 2:
+                    board.board[hero_y][hero_x] = 0
+                    board.board[hero_y][hero_x - 1] = 1
+                else:
+                    print('Вы проиграли')
+                    running = False
+                    break
         if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
             hero_x, hero_y = board.where_hero()
             if hero_y != board.height - 1:
-                board.board[hero_y][hero_x] = 0
-                board.board[hero_y + 1][hero_x] = 1
+                if board.board[hero_y + 1][hero_x] != 2:
+                    board.board[hero_y][hero_x] = 0
+                    board.board[hero_y + 1][hero_x] = 1
+                else:
+                    print('Вы проиграли')
+                    running = False
+                    break
         if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             hero_x, hero_y = board.where_hero()
             if hero_x != board.width - 1:
-                board.board[hero_y][hero_x] = 0
-                board.board[hero_y][hero_x + 1] = 1
+                if board.board[hero_y][hero_x + 1] != 2:
+                    board.board[hero_y][hero_x] = 0
+                    board.board[hero_y][hero_x + 1] = 1
+                else:
+                    print('Вы проиграли')
+                    running = False
+                    break
     screen.fill((255, 255, 255))
     board.render()
     all_sprites.draw(screen)
