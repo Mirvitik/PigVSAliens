@@ -1,8 +1,13 @@
+import random
+
 from hero import Hero
 from alien import Alien
 import os
 import sys
 import pygame
+from stone import Stone
+from bomb import Bomb
+from boom import Boom
 
 size = width, height = 500, 500
 screen = pygame.display.set_mode(size)
@@ -44,7 +49,11 @@ class Board:
         self.height_pix = screen.get_height()
         self.width = self.width_pix // self.cell_size
         self.height = self.height_pix // self.cell_size
-        self.board = [[0] * self.width for _ in range(self.height)]
+        self.board = []
+        for y in range(self.height):
+            self.board.append([])
+            for x in range(self.width):
+                self.board[y].append(random.choice([0, 0, 0, 0, 3]))
         self.all_sprites = group
 
     def render(self):
@@ -55,9 +64,16 @@ class Board:
                     Hero(self.all_sprites, x, y, self.cell_size)
                 elif self.board[y][x] == 2:
                     Alien(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 3:
+                    Stone(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 4:
+                    Bomb(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 5:
+                    Boom(self.all_sprites, x, y, self.cell_size)
 
     def where_hero(self):
         for y in range(self.height):
             for x in range(self.width):
                 if self.board[y][x] == 1:
                     return x, y
+        return False

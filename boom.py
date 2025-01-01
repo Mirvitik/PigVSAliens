@@ -1,6 +1,9 @@
-import pygame
 import os
 import sys
+import pygame
+
+size = width, height = 500, 500
+screen = pygame.display.set_mode(size)
 
 
 def load_image(name, colorkey=None):
@@ -19,14 +22,14 @@ def load_image(name, colorkey=None):
     return image
 
 
-class Alien(pygame.sprite.Sprite):
-    image = load_image('alien3.png')
+class Boom(pygame.sprite.Sprite):
+    image = load_image('boom.png')
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
-        Alien.image = pygame.transform.scale(Alien.image, (64, 64))
-        self.image = Alien.image
-        self.rect = self.image.get_rect()
+        Boom.image = pygame.transform.scale(Boom.image, (64, 64))
+        self.hero_image = Boom.image
+        self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x
         self.rect.y = cell_size * y
         self.x = x

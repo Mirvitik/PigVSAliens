@@ -23,7 +23,7 @@ def load_image(name, colorkey=None):
 
 
 class Hero(pygame.sprite.Sprite):
-    image = load_image('pig.jpg')
+    image = load_image('pig.png')
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
