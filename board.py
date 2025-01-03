@@ -55,7 +55,7 @@ class Board:
             for x in range(self.width):
                 self.board[y].append(random.choice([0, 0, 0, 0, 3]))
         self.all_sprites = group
-        self.cords = [(1, 1), (4, 5)] # добавил список координат всех пришельцев
+        self.cords = [(1, 1), (5, 4)] # добавил список координат всех пришельцев
 
     def render(self):
         for y in range(self.height):
@@ -80,8 +80,8 @@ class Board:
         return False
 
     def move_enemy(self):  # эта функция и все нижние отвечают за волновой алгоритм
-        for _ in range(len(self.cords)):
-            x, y = self.cords.pop(0)
+        for i in range(len(self.cords)):
+            x, y = self.cords.pop(i)
             self.board[y][x] = 0
             next_pos = self.find_path_step((x, y), self.where_hero())
             self.board[next_pos[1]][next_pos[0]] = 2
