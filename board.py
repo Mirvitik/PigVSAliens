@@ -55,6 +55,7 @@ class Board:
             for x in range(self.width):
                 self.board[y].append(random.choice([0, 0, 0, 0, 3]))
         self.all_sprites = group
+        self.cords = [(1, 1), (4, 5)] # добавил список координат всех пришельцев
 
     def render(self):
         for y in range(self.height):
@@ -77,3 +78,45 @@ class Board:
                 if self.board[y][x] == 1:
                     return x, y
         return False
+
+    def move_enemy(self):  # эта функция и все нижние отвечают за волновой алгоритм
+        for _ in range(len(self.cords)):
+            x, y = self.cords.pop(0)
+            self.board[y][x] = 0
+            next_pos = self.find_path_step((x, y), self.where_hero())
+            self.board[next_pos[1]][next_pos[0]] = 2
+            self.cords.append(next_pos)
+
+    def find_path_step(self, start,
+                       target):  # волновой алгоритм, находит ближайшую координату(не вдавайся в подробности, я сам
+        # не очень его понял)
+        if target is False:
+            return start
+        INF = 1000
+        x, y = start
+        distance = [[INF] * self.width for _ in range(self.height)]
+        distance[x][y] = 0
+        prev = [[None] * self.width for _ in range(self.height)]  # хранит начальные клетки
+        queue = [(x, y)]
+        while queue:
+            x, y = queue.pop(0)
+            for dx, dy in (1, 0), (0, 1), (-1, 0), (0, -1):
+                next_x, next_y = x + dx, y + dy
+                if 0 <= next_x < self.width and 0 < next_y < self.height and \
+                        self.is_free((next_x, next_y)) and distance[next_y][next_x] == INF:
+                    distance[next_y][next_x] = distance[y][x] + 1
+                    prev[next_y][next_x] = (x, y)
+                    queue.append((next_x, next_y))
+        x, y = target
+        if distance[y][x] == INF or start == target:
+            return start
+        while prev[y][x] != start:
+            if prev[y][x] is None:
+                return start
+            x, y = prev[y][x]
+        return x, y
+
+    def is_free(self, pos):
+        if self.board[pos[1]][pos[0]] == 2:
+            return False
+        return True

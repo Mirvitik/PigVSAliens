@@ -2,6 +2,7 @@ import pygame
 import os
 import sys
 
+TILE_SIZE = 50
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -31,3 +32,13 @@ class Alien(pygame.sprite.Sprite):
         self.rect.y = cell_size * y
         self.x = x
         self.y = y
+
+    def set_position(self, pos: tuple):
+        self.x, self.y = pos
+
+    def get_position(self):
+        return self.x, self.y
+
+    def render(self, screen):
+        center = self.x * TILE_SIZE + TILE_SIZE // 2, self.y * TILE_SIZE + TILE_SIZE // 2
+        pygame.draw.circle(screen, (255, 255, 255), center, TILE_SIZE // 2)
