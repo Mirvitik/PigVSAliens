@@ -1,5 +1,3 @@
-import random
-
 from hero import Hero
 from alien import Alien
 import os
@@ -8,9 +6,7 @@ import pygame
 from stone import Stone
 from bomb import Bomb
 from boom import Boom
-
-size = width, height = 500, 500
-screen = pygame.display.set_mode(size)
+from door import Door
 
 
 def load_image(name, colorkey=None):
@@ -29,6 +25,29 @@ def load_image(name, colorkey=None):
     return image
 
 
+def load_level(filename):
+    filename = "data/" + filename
+    with open(filename, 'r') as mapFile:
+        level_map = [line.strip() for line in mapFile]
+    in_strings = list(map(lambda x: [i for i in x.ljust(max(map(len, level_map)), '.')], level_map))
+    out = []
+    for el in in_strings:
+        new_el = []
+        for value in el:
+            new_value = 0
+            if value == '@':
+                new_value = 1
+            elif value == 'e':
+                new_value = 2
+            elif value == '+':
+                new_value = 3
+            elif value == 'Q':
+                new_value = 6
+            new_el.append(new_value)
+        out.append(new_el)
+    return out
+
+
 class Cell(pygame.sprite.Sprite):
     image = load_image('grass.png')
 
@@ -42,20 +61,18 @@ class Cell(pygame.sprite.Sprite):
 
 
 class Board:
-    def __init__(self, screen, group):
+    def __init__(self, screen, group, lvl):
         super().__init__()
         self.cell_size = 50
-        self.width_pix = screen.get_width()
-        self.height_pix = screen.get_height()
-        self.width = self.width_pix // self.cell_size
-        self.height = self.height_pix // self.cell_size
         self.board = []
-        for y in range(self.height):
-            self.board.append([])
-            for x in range(self.width):
-                self.board[y].append(random.choice([0, 0, 0, 0, 3]))
+        if lvl == 1:
+            self.board = load_level('lvl1.txt')
+        elif lvl == 2:
+            self.board = load_level('lvl2.txt')
+        self.width = len(self.board[0])
+        self.height = len(self.board)
         self.all_sprites = group
-        self.cords = [(1, 1), (5, 4)] # добавил список координат всех пришельцев
+        self.cords = self.where_enemy()
 
     def render(self):
         for y in range(self.height):
@@ -71,6 +88,10 @@ class Board:
                     Bomb(self.all_sprites, x, y, self.cell_size)
                 elif self.board[y][x] == 5:
                     Boom(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 6:
+                    Stone(self.all_sprites, x, y, self.cell_size)
+                elif self.board[y][x] == 7:
+                    Door(self.all_sprites, x, y, self.cell_size)
 
     def where_hero(self):
         for y in range(self.height):
@@ -120,3 +141,18 @@ class Board:
         if self.board[pos[1]][pos[0]] == 2:
             return False
         return True
+
+    def where_enemy(self):
+        out = []
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.board[y][x] == 2:
+                    out.append((x, y))
+        return out
+
+    def where_exit(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.board[y][x] == 7:
+                    return x, y
+        return False

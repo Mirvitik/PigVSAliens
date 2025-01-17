@@ -27,7 +27,7 @@ class Boom(pygame.sprite.Sprite):
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
-        Boom.image = pygame.transform.scale(Boom.image, (64, 64))
+        Boom.image = pygame.transform.scale(Boom.image, (50, 50))
         self.hero_image = Boom.image
         self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x

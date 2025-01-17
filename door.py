@@ -1,8 +1,10 @@
-import pygame
 import os
 import sys
+import pygame
 
-TILE_SIZE = 50
+size = width, height = 500, 500
+screen = pygame.display.set_mode(size)
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
@@ -20,25 +22,15 @@ def load_image(name, colorkey=None):
     return image
 
 
-class Alien(pygame.sprite.Sprite):
-    image = load_image('alien3.png')
+class Door(pygame.sprite.Sprite):
+    image = load_image('door.png')
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
-        Alien.image = pygame.transform.scale(Alien.image, (50, 50))
-        self.image = Alien.image
-        self.rect = self.image.get_rect()
+        Door.image = pygame.transform.scale(Door.image, (50, 50))
+        self.hero_image = Door.image
+        self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x
         self.rect.y = cell_size * y
         self.x = x
         self.y = y
-
-    def set_position(self, pos: tuple):
-        self.x, self.y = pos
-
-    def get_position(self):
-        return self.x, self.y
-
-    def render(self, screen):
-        center = self.x * TILE_SIZE + TILE_SIZE // 2, self.y * TILE_SIZE + TILE_SIZE // 2
-        pygame.draw.circle(screen, (255, 255, 255), center, TILE_SIZE // 2)

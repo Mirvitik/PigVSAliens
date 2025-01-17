@@ -80,13 +80,14 @@ def lose(screen):  # функция выводит экран проигрыша
 def main(event, bomb=False):
     if event.type == pygame.QUIT:
         pygame.quit()
+        sys.exit()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
         try:  # если игрок захочет нажать на кнопки, когда пришелец занял его клетку
             hero_x, hero_y = board.where_hero()
         except TypeError:
-            lose()
+            lose(screen)
             return
-        if hero_y != 0:
+        if hero_y != 0 and board.board[hero_y - 1][hero_x] == 0:
             if board.board[hero_y - 1][hero_x] != 2:
                 board.board[hero_y][hero_x] = 0
                 board.board[hero_y - 1][hero_x] = 1
@@ -94,7 +95,7 @@ def main(event, bomb=False):
                 lose(screen)
     if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
         hero_x, hero_y = board.where_hero()
-        if hero_x != 0:
+        if hero_x != 0 and board.board[hero_y][hero_x - 1] == 0:
             if board.board[hero_y][hero_x - 1] != 2:
                 board.board[hero_y][hero_x] = 0
                 board.board[hero_y][hero_x - 1] = 1
@@ -102,7 +103,7 @@ def main(event, bomb=False):
                 lose(screen)
     if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
         hero_x, hero_y = board.where_hero()
-        if hero_y != board.height - 1:
+        if hero_y != board.height - 1 and board.board[hero_y + 1][hero_x] == 0:
             if board.board[hero_y + 1][hero_x] != 2:
                 board.board[hero_y][hero_x] = 0
                 board.board[hero_y + 1][hero_x] = 1
@@ -110,7 +111,7 @@ def main(event, bomb=False):
                 lose(screen)
     if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
         hero_x, hero_y = board.where_hero()
-        if hero_x != board.width - 1:
+        if hero_x != board.width - 1 and board.board[hero_y][hero_x + 1] == 0:
             if board.board[hero_y][hero_x + 1] != 2:
                 board.board[hero_y][hero_x] = 0
                 board.board[hero_y][hero_x + 1] = 1
@@ -127,23 +128,16 @@ def main(event, bomb=False):
         start_time = time.time()
         while time.time() - start_time < 2:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    main(event, bomb=True)
-                else:
-                    main(event)
+                main(event)
         boom1(last_hero_x, hero_y)
 
         # задержка 1 секунда
         start_time = time.time()
         while time.time() - start_time < 1:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    main(event, bomb=True)
-                else:
-                    main(event)
+                main(event)
 
         boom2()
-
     screen.fill((255, 255, 255))
     board.render()
     all_sprites.draw(screen)
@@ -160,21 +154,43 @@ def boom1(hero_x, hero_y):
     if hero_x < board.width - 1 and board.board[hero_y][hero_x + 1] == 4:
         board.board[hero_y][hero_x + 1] = 5
         if hero_y - 1 >= 0:
-            board.board[hero_y - 1][hero_x + 1] = 5
+            if board.board[hero_y - 1][hero_x + 1] == 6:
+                board.board[hero_y - 1][hero_x + 1] = 7
+            else:
+                board.board[hero_y - 1][hero_x + 1] = 5
         if hero_y - 2 >= 0:
-            board.board[hero_y - 2][hero_x + 1] = 5
+            if board.board[hero_y - 2][hero_x + 1] == 6:
+                board.board[hero_y - 2][hero_x + 1] = 7
+            else:
+                board.board[hero_y - 2][hero_x + 1] = 5
         if hero_y + 1 <= board.height - 1:
-            board.board[hero_y + 1][hero_x + 1] = 5
+            if board.board[hero_y + 1][hero_x + 1] == 6:
+                board.board[hero_y + 1][hero_x + 1] = 7
+            else:
+                board.board[hero_y + 1][hero_x + 1] = 5
         if hero_y + 2 <= board.height - 1:
-            board.board[hero_y + 2][hero_x + 1] = 5
+            if board.board[hero_y + 2][hero_x + 1] == 6:
+                board.board[hero_y + 2][hero_x + 1] = 7
+            else:
+                board.board[hero_y + 2][hero_x + 1] = 5
 
         if hero_x + 2 <= board.width - 1:
-            board.board[hero_y][hero_x + 2] = 5
+            if board.board[hero_y][hero_x + 2] == 6:
+                board.board[hero_y][hero_x + 2] = 7
+            else:
+                board.board[hero_y][hero_x + 2] = 5
         if hero_x + 3 <= board.width - 1:
-            board.board[hero_y][hero_x + 3] = 5
+            if board.board[hero_y][hero_x + 3] == 6:
+                board.board[hero_y][hero_x + 3] = 7
+            else:
+                board.board[hero_y][hero_x + 3] = 5
         board.board[hero_y][hero_x] = 5
         if hero_x - 1 >= 0:
-            board.board[hero_y][hero_x - 1] = 5
+            if board.board[hero_y][hero_x - 1] == 6:
+                board.board[hero_y][hero_x - 1] = 7
+            else:
+                board.board[hero_y][hero_x - 1] = 5
+
     screen.fill((255, 255, 255))
     board.render()
     all_sprites.draw(screen)
@@ -199,18 +215,20 @@ screen.fill(pygame.Color('Black'))
 
 start_window(screen)  # показываем стортовое окно
 
+all_sprites = pygame.sprite.Group()
+levels = [1, 2, 3, 4, 5, 6, 7]
+lvl = 0
+board = Board(screen, all_sprites, lvl=levels[lvl])
+hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50)
+size = (550, 500)
+screen = pygame.display.set_mode(size)
+
 ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
 delay = 1000
 pygame.time.set_timer(ALIEN_EVENT, delay)
 
-all_sprites = pygame.sprite.Group()
-board = Board(screen, all_sprites)
-board.board[0][0] = 1
-board.board[1][1] = 2
-board.board[4][5] = 2
-hero = Hero(all_sprites, 0, 0, 50)
-
 running = True
+new_lvl = False
 while running:
     if not board.where_hero():
         lose(screen)
@@ -223,10 +241,23 @@ while running:
             if event.key == pygame.K_SPACE:
                 main(event, bomb=True)
             else:
-                main(event)
+                hero_x, hero_y = board.where_hero()
+                exit_xy = board.where_exit()
+                if exit_xy and ((event.key == pygame.K_d and (hero_x + 1, hero_y) == exit_xy) or
+                        (event.key == pygame.K_s and (hero_x, hero_y + 1) == exit_xy) or
+                        (event.key == pygame.K_a and (hero_x - 1, hero_y) == exit_xy) or
+                        (event.key == pygame.K_w and (hero_x, hero_y - 1) == exit_xy)):
+                    new_lvl = True
+                else:
+                    main(event)
     screen.fill((255, 255, 255))
     board.render()
     all_sprites.draw(screen)
+    if new_lvl:
+        lvl += 1
+        board = Board(screen, all_sprites, lvl=levels[lvl])
+        new_lvl = False
     clock.tick(fps)
     pygame.display.flip()
 pygame.quit()
+sys.exit()

@@ -27,7 +27,7 @@ class Bomb(pygame.sprite.Sprite):
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
-        Bomb.image = pygame.transform.scale(Bomb.image, (64, 64))
+        Bomb.image = pygame.transform.scale(Bomb.image, (50, 50))
         self.hero_image = Bomb.image
         self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x

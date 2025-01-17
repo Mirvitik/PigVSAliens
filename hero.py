@@ -27,7 +27,7 @@ class Hero(pygame.sprite.Sprite):
 
     def __init__(self, group, x, y, cell_size):
         super().__init__(group)
-        Hero.image = pygame.transform.scale(Hero.image, (64, 64))
+        Hero.image = pygame.transform.scale(Hero.image, (50, 50))
         self.hero_image = Hero.image
         self.rect = self.hero_image.get_rect()
         self.rect.x = cell_size * x
