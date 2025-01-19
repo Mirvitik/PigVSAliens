@@ -101,6 +101,7 @@ class Board:
         return False
 
     def move_enemy(self):  # эта функция и все нижние отвечают за волновой алгоритм
+        self.cords = self.where_enemy()
         for i in range(len(self.cords)):
             x, y = self.cords.pop(i)
             self.board[y][x] = 0

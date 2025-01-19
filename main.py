@@ -10,8 +10,11 @@ https://lms.yandex.ru/courses/1180/groups/23622/lessons/6992/materials/20704
 '''
 import pygame_gui
 
+nick = None  # переменная с ником игрока
+
 
 def start_window(screen):
+    global nick
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
     text = font.render('Свин против пришельцев', True, pygame.Color('green'))
@@ -26,9 +29,11 @@ def start_window(screen):
         text='Выйти из игры',
         manager=manager
     )
-    text_esc = font2.render('Нажмите клавишу "esc" для выхода из игры', True, pygame.Color('green'))
+    nickname_field = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((180, 225), (110, 50)),
+                                                         manager=manager)
+    text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, pygame.Color('green'))
     screen.blit(text, (25, 25))
-    screen.blit(text_esc, (50, 175))
+    screen.blit(text_help, (25, 175))
     text_x = width // 2 - text.get_width() // 2
     text_y = 25
     text_w = text.get_width()
@@ -37,21 +42,42 @@ def start_window(screen):
                                            text_w + 20, text_h + 20), 5)
     running = True
     pygame.display.flip()
+    color = pygame.Color('green')
     while running:
         time_delta = clock.tick(60) / 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                dialog = pygame_gui.windows.UIConfirmationDialog(rect=pygame.Rect((200, 200), (300, 200)),
+                                                                 manager=manager,
+                                                                 window_title='Подтверждение',
+                                                                 action_long_desc='Вы уверены, что хотите выйти?',
+                                                                 action_short_name='OK',
+                                                                 blocking=True)
+            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
+                nick = event.text
+            if event.type == pygame_gui.UI_CONFIRMATION_DIALOG_CONFIRMED:
                 sys.exit()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == start_button:
-                    running = False
-                    break
+                    if nick is None or ''.join(nick.split()) == '':
+                        color = pygame.Color('red')
+                    else:
+                        running = False
+                        break
                 if event.ui_element == exit_button:
-                    sys.exit()
-            if pygame.key.get_pressed()[pygame.K_a]:
-                running = False
-                break
+                    dialog = pygame_gui.windows.UIConfirmationDialog(rect=pygame.Rect((200, 200), (300, 200)),
+                                                                     manager=manager,
+                                                                     window_title='Подтверждение',
+                                                                     action_long_desc='Вы уверены, что хотите выйти?',
+                                                                     action_short_name='OK',
+                                                                     blocking=True)
             manager.process_events(event)
+        screen.fill(pygame.Color('black'))
+        screen.blit(text, (25, 25))
+        text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, color)
+        screen.blit(text_help, (25, 175))
+        pygame.draw.rect(screen, (0, 255, 0), (text_x - 10, text_y - 10,
+                                               text_w + 20, text_h + 20), 5)
         manager.update(time_delta)
         manager.draw_ui(screen)
         pygame.display.flip()
@@ -62,10 +88,8 @@ def lose(screen):  # функция выводит экран проигрыша
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
     text = font.render('Вы проиграли', True, pygame.Color('red'))
-    text_play = font2.render('Нажмите "A" для продолжения игры', True, pygame.Color('red'))
     text_esc = font2.render('Нажмите клавишу "esc" для выхода из игры', True, pygame.Color('red'))
     screen.blit(text, (25, 25))
-    screen.blit(text_play, (50, 150))
     screen.blit(text_esc, (50, 175))
     pygame.display.flip()
     running = True
@@ -244,9 +268,9 @@ while running:
                 hero_x, hero_y = board.where_hero()
                 exit_xy = board.where_exit()
                 if exit_xy and ((event.key == pygame.K_d and (hero_x + 1, hero_y) == exit_xy) or
-                        (event.key == pygame.K_s and (hero_x, hero_y + 1) == exit_xy) or
-                        (event.key == pygame.K_a and (hero_x - 1, hero_y) == exit_xy) or
-                        (event.key == pygame.K_w and (hero_x, hero_y - 1) == exit_xy)):
+                                (event.key == pygame.K_s and (hero_x, hero_y + 1) == exit_xy) or
+                                (event.key == pygame.K_a and (hero_x - 1, hero_y) == exit_xy) or
+                                (event.key == pygame.K_w and (hero_x, hero_y - 1) == exit_xy)):
                     new_lvl = True
                 else:
                     main(event)
@@ -257,7 +281,6 @@ while running:
         lvl += 1
         board = Board(screen, all_sprites, lvl=levels[lvl])
         new_lvl = False
-    clock.tick(fps)
     pygame.display.flip()
 pygame.quit()
 sys.exit()
