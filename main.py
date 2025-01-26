@@ -2,6 +2,7 @@ import time
 from board import Board
 from hero import Hero
 import pygame
+from reg_window import reg_window
 import sys
 
 '''я узнал о бибилиотеке pygame_gui из видеоурока
@@ -236,7 +237,8 @@ fps = 165
 clock = pygame.time.Clock()
 pygame.init()
 screen.fill(pygame.Color('Black'))
-
+reg_window()
+screen.fill((0, 0, 0))
 start_window(screen)  # показываем стортовое окно
 
 all_sprites = pygame.sprite.Group()
