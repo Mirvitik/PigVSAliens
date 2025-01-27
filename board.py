@@ -100,7 +100,7 @@ class Board:
     def move_enemy(self):  # эта функция и все нижние отвечают за волновой алгоритм
         self.cords = self.where_enemy()
         for i in range(len(self.cords)):
-            x, y = self.cords.pop(i)
+            x, y = self.cords.pop(0)
             self.board[y][x] = 0
             next_pos = self.find_path_step((x, y), self.where_hero())
             self.board[next_pos[1]][next_pos[0]] = 2
@@ -132,7 +132,10 @@ class Board:
         while prev[y][x] != start:
             if prev[y][x] is None:
                 return start
-            x, y = prev[y][x]
+            try:
+                x, y = prev[y][x]
+            except Exception:
+                return start
         return x, y
 
     def is_free(self, pos):
