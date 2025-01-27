@@ -153,14 +153,20 @@ def main(event, bomb=False):
         start_time = time.time()
         while time.time() - start_time < 2:
             for event in pygame.event.get():
-                main(event)
+                if event.type == ALIEN_EVENT:
+                    board.move_enemy()
+                elif event.type == pygame.KEYDOWN:
+                    main(event)
         boom1(last_hero_x, hero_y)
 
         # задержка 1 секунда
         start_time = time.time()
         while time.time() - start_time < 1:
             for event in pygame.event.get():
-                main(event)
+                if event.type == ALIEN_EVENT:
+                    board.move_enemy()
+                elif event.type == pygame.KEYDOWN:
+                    main(event)
 
         boom2()
     screen.fill((255, 255, 255))
@@ -246,7 +252,7 @@ levels = [1, 2, 3, 4, 5, 6, 7]
 lvl = 0
 board = Board(screen, all_sprites, lvl=levels[lvl])
 hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50)
-size = (550, 500)
+size = (len(board.board[0]) * 50, len(board.board) * 50)
 screen = pygame.display.set_mode(size)
 
 ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
@@ -282,6 +288,8 @@ while running:
     if new_lvl:
         lvl += 1
         board = Board(screen, all_sprites, lvl=levels[lvl])
+        size = (len(board.board[0]) * 50, len(board.board) * 50)
+        screen = pygame.display.set_mode(size)
         new_lvl = False
     pygame.display.flip()
 pygame.quit()

@@ -65,10 +65,7 @@ class Board:
         super().__init__()
         self.cell_size = 50
         self.board = []
-        if lvl == 1:
-            self.board = load_level('lvl1.txt')
-        elif lvl == 2:
-            self.board = load_level('lvl2.txt')
+        self.board = load_level(f'lvl{lvl}.txt')
         self.width = len(self.board[0])
         self.height = len(self.board)
         self.all_sprites = group
