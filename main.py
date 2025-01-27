@@ -29,7 +29,7 @@ def start_window(screen):
         relative_rect=pygame.Rect((180, 325), (110, 50)),
         text='Выйти из игры',
         manager=manager
-    )                                          manager=manager)
+    )                                   
     text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, pygame.Color('green'))
     screen.blit(text, (25, 25))
     screen.blit(text_help, (25, 175))
