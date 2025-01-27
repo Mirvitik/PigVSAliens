@@ -29,9 +29,7 @@ def start_window(screen):
         relative_rect=pygame.Rect((180, 325), (110, 50)),
         text='Выйти из игры',
         manager=manager
-    )
-    nickname_field = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((180, 225), (110, 50)),
-                                                         manager=manager)
+    )                                          manager=manager)
     text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, pygame.Color('green'))
     screen.blit(text, (25, 25))
     screen.blit(text_help, (25, 175))
@@ -54,8 +52,6 @@ def start_window(screen):
                                                                  action_long_desc='Вы уверены, что хотите выйти?',
                                                                  action_short_name='OK',
                                                                  blocking=True)
-            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
-                nick = event.text
             if event.type == pygame_gui.UI_CONFIRMATION_DIALOG_CONFIRMED:
                 sys.exit()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
@@ -256,7 +252,7 @@ size = (len(board.board[0]) * 50, len(board.board) * 50)
 screen = pygame.display.set_mode(size)
 
 ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
-delay = 1000
+delay = 3000
 pygame.time.set_timer(ALIEN_EVENT, delay)
 
 running = True
