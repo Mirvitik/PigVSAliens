@@ -4,14 +4,29 @@ from hero import Hero
 import pygame
 from reg_window import reg_window
 import sys
-
-'''я узнал о бибилиотеке pygame_gui из видеоурока
-https://lms.yandex.ru/courses/1180/groups/23622/lessons/6992/materials/20704
-установи её через pip
-'''
 import pygame_gui
 
 nick = None  # переменная с ником игрока
+
+
+def win(screen, num):  # num-переменная со счётом игрока
+    screen.fill(pygame.Color('black'))
+    font = pygame.font.Font(None, 50)
+    font2 = pygame.font.Font(None, 25)
+    text = font.render('ВЫ ВЫЙГРАЛИ!', True, pygame.Color('yellow'))
+    text_num = font2.render(f'ВАШ СЧЁТ: {num}', True, pygame.Color('yellow'))
+    text_top = font2.render(f'ТОП 10 ИГРОКОВ:', True, pygame.Color('yellow'))
+    screen.blit(text, (25, 25))
+    screen.blit(text_num, (50, 175))
+    screen.blit(text_top, (50, 200))
+    pygame.display.flip()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                sys.exit()
+            if pygame.key.get_pressed()[pygame.K_a]:
+                return
 
 
 def start_window(screen):
@@ -29,7 +44,7 @@ def start_window(screen):
         relative_rect=pygame.Rect((180, 325), (110, 50)),
         text='Выйти из игры',
         manager=manager
-    )                                   
+    )
     text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, pygame.Color('green'))
     screen.blit(text, (25, 25))
     screen.blit(text_help, (25, 175))
@@ -56,11 +71,8 @@ def start_window(screen):
                 sys.exit()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == start_button:
-                    if nick is None or ''.join(nick.split()) == '':
-                        color = pygame.Color('red')
-                    else:
-                        running = False
-                        break
+                    running = False
+                    break
                 if event.ui_element == exit_button:
                     dialog = pygame_gui.windows.UIConfirmationDialog(rect=pygame.Rect((200, 200), (300, 200)),
                                                                      manager=manager,
@@ -102,6 +114,8 @@ def main(event, bomb=False):
     if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
+    if lvl >= 4:
+        win(screen, 0)
     if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
         try:  # если игрок захочет нажать на кнопки, когда пришелец занял его клетку
             hero_x, hero_y = board.where_hero()
@@ -175,6 +189,11 @@ def main(event, bomb=False):
 def boom0(hero_x, hero_y):
     if hero_x < board.width - 1 and board.board[hero_y][hero_x + 1] == 0:
         board.board[hero_y][hero_x + 1] = 4
+        screen.fill((255, 255, 255))
+        board.render()
+        all_sprites.draw(screen)
+        clock.tick(fps)
+        pygame.display.flip()
 
 
 def boom1(hero_x, hero_y):
@@ -263,6 +282,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if lvl >= 4:
+            win(screen, 0)
         if event.type == ALIEN_EVENT:
             board.move_enemy()
         if event.type == pygame.KEYDOWN:

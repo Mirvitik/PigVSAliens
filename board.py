@@ -114,6 +114,10 @@ class Board:
         INF = 1000
         x, y = start
         distance = [[INF] * self.width for _ in range(self.height)]
+        try:
+            distance[x][y] = 0
+        except Exception:
+            return start
         distance[x][y] = 0
         prev = [[None] * self.width for _ in range(self.height)]  # хранит начальные клетки
         queue = [(x, y)]
@@ -136,6 +140,8 @@ class Board:
                 x, y = prev[y][x]
             except Exception:
                 return start
+        if self.board[y][x] == 3 or self.board[y][x] == 6 or self.board[y][x] == 7:
+            return start
         return x, y
 
     def is_free(self, pos):
