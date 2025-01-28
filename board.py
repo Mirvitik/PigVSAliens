@@ -158,8 +158,9 @@ class Board:
         return out
 
     def where_exit(self):
+        exits = []
         for y in range(self.height):
             for x in range(self.width):
                 if self.board[y][x] == 7:
-                    return x, y
-        return False
+                    exits.append((x, y))
+        return exits

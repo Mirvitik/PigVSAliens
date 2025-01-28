@@ -202,39 +202,39 @@ def boom1(hero_x, hero_y):
         if hero_y - 1 >= 0:
             if board.board[hero_y - 1][hero_x + 1] == 6:
                 board.board[hero_y - 1][hero_x + 1] = 7
-            else:
+            elif board.board[hero_y - 1][hero_x + 1] != 7:
                 board.board[hero_y - 1][hero_x + 1] = 5
         if hero_y - 2 >= 0:
             if board.board[hero_y - 2][hero_x + 1] == 6:
                 board.board[hero_y - 2][hero_x + 1] = 7
-            else:
+            elif board.board[hero_y - 2][hero_x + 1] != 7:
                 board.board[hero_y - 2][hero_x + 1] = 5
         if hero_y + 1 <= board.height - 1:
             if board.board[hero_y + 1][hero_x + 1] == 6:
                 board.board[hero_y + 1][hero_x + 1] = 7
-            else:
+            elif board.board[hero_y + 1][hero_x + 1] != 7:
                 board.board[hero_y + 1][hero_x + 1] = 5
         if hero_y + 2 <= board.height - 1:
             if board.board[hero_y + 2][hero_x + 1] == 6:
                 board.board[hero_y + 2][hero_x + 1] = 7
-            else:
+            elif board.board[hero_y + 2][hero_x + 1] != 7:
                 board.board[hero_y + 2][hero_x + 1] = 5
 
         if hero_x + 2 <= board.width - 1:
             if board.board[hero_y][hero_x + 2] == 6:
                 board.board[hero_y][hero_x + 2] = 7
-            else:
+            elif board.board[hero_y][hero_x + 2] != 7:
                 board.board[hero_y][hero_x + 2] = 5
         if hero_x + 3 <= board.width - 1:
             if board.board[hero_y][hero_x + 3] == 6:
                 board.board[hero_y][hero_x + 3] = 7
-            else:
+            elif board.board[hero_y][hero_x + 3] != 7:
                 board.board[hero_y][hero_x + 3] = 5
         board.board[hero_y][hero_x] = 5
         if hero_x - 1 >= 0:
             if board.board[hero_y][hero_x - 1] == 6:
                 board.board[hero_y][hero_x - 1] = 7
-            else:
+            elif board.board[hero_y][hero_x - 1] != 7:
                 board.board[hero_y][hero_x - 1] = 5
 
     screen.fill((255, 255, 255))
@@ -271,7 +271,7 @@ size = (len(board.board[0]) * 50, len(board.board) * 50)
 screen = pygame.display.set_mode(size)
 
 ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
-delay = 3000
+delay = 1000
 pygame.time.set_timer(ALIEN_EVENT, delay)
 
 running = True
@@ -292,10 +292,10 @@ while running:
             else:
                 hero_x, hero_y = board.where_hero()
                 exit_xy = board.where_exit()
-                if exit_xy and ((event.key == pygame.K_d and (hero_x + 1, hero_y) == exit_xy) or
-                                (event.key == pygame.K_s and (hero_x, hero_y + 1) == exit_xy) or
-                                (event.key == pygame.K_a and (hero_x - 1, hero_y) == exit_xy) or
-                                (event.key == pygame.K_w and (hero_x, hero_y - 1) == exit_xy)):
+                if exit_xy and ((event.key == pygame.K_d and any(bool((hero_x + 1, hero_y) == xy) for xy in exit_xy)) or
+                                (event.key == pygame.K_s and any(bool((hero_x, hero_y + 1) == xy) for xy in exit_xy)) or
+                                (event.key == pygame.K_a and any(bool((hero_x - 1, hero_y) == xy) for xy in exit_xy)) or
+                                (event.key == pygame.K_w and any(bool((hero_x, hero_y - 1) == xy) for xy in exit_xy))):
                     new_lvl = True
                 else:
                     main(event)
