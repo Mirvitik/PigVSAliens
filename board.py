@@ -70,13 +70,27 @@ class Board:
         self.height = len(self.board)
         self.all_sprites = group
         self.cords = self.where_enemy()
+        self.column, self.col = 0, 0
+        self.posy = (0, 0)
 
     def render(self):
         for y in range(self.height):
             for x in range(self.width):
                 Cell(self.all_sprites, x * self.cell_size, y * self.cell_size)
                 if self.board[y][x] == 1:
-                    Hero(self.all_sprites, x, y, self.cell_size)
+                    self.column += 1
+                    if self.column >= 3:
+                        self.column = 0
+                    if self.posy[0] - self.where_hero()[0] > 0:
+                        self.col = (-1, 0)
+                    if self.posy[0] - self.where_hero()[0] < 0:
+                        self.col = (1, 0)
+                    if self.posy[1] - self.where_hero()[1] > 0:
+                        self.col = (0, -1)
+                    if self.posy[1] - self.where_hero()[1] < 0:
+                        self.col = (0, 1)
+                    Hero(self.all_sprites, x, y, self.cell_size, load_image('pigs.png'), self.column, self.col)
+                    self.posy = self.where_hero()
                 elif self.board[y][x] == 2:
                     Alien(self.all_sprites, x, y, self.cell_size)
                 elif self.board[y][x] == 3:

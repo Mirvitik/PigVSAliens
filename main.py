@@ -1,6 +1,6 @@
 import time
 from board import Board
-from hero import Hero
+from hero import Hero, load_image
 import pygame
 from reg_window import reg_window
 import sys
@@ -93,20 +93,34 @@ def start_window(screen):
 
 
 def lose(screen):  # функция выводит экран проигрыша
+    global all_sprites
+    global levels, lvl, board, size, hero
     screen.fill(pygame.Color('black'))
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
     text = font.render('Вы проиграли', True, pygame.Color('red'))
     text_esc = font2.render('Нажмите клавишу "esc" для выхода из игры', True, pygame.Color('red'))
+    text_f = font2.render('Нажмите клавишу "f" для перезапуска игры', True, pygame.Color('red'))
     screen.blit(text, (25, 25))
-    screen.blit(text_esc, (50, 175))
+    screen.blit(text_esc, (50, 200))
     pygame.display.flip()
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 sys.exit()
-            if pygame.key.get_pressed()[pygame.K_a]:
+            if pygame.key.get_pressed()[pygame.K_f]:
+                all_sprites = pygame.sprite.Group()
+                levels = [1, 2, 3, 4, 5, 6, 7]
+                lvl = 0
+                board = Board(screen, all_sprites, lvl=levels[lvl])
+                hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
+                size = (len(board.board[0]) * 50, len(board.board) * 50)
+                screen = pygame.display.set_mode(size)
+
+                ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
+                delay = 1000
+                pygame.time.set_timer(ALIEN_EVENT, delay)
                 return
 
 
@@ -266,7 +280,7 @@ all_sprites = pygame.sprite.Group()
 levels = [1, 2, 3, 4, 5, 6, 7]
 lvl = 0
 board = Board(screen, all_sprites, lvl=levels[lvl])
-hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50)
+hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
 size = (len(board.board[0]) * 50, len(board.board) * 50)
 screen = pygame.display.set_mode(size)
 
