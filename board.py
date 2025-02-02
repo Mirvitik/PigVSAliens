@@ -58,6 +58,33 @@ class Cell(pygame.sprite.Sprite):
         self.rect = self.cell_image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.mask = pygame.mask.from_surface(Cell.image)
+
+
+class Lava(pygame.sprite.Sprite):
+    image = load_image('lava.jpg')
+
+    def __init__(self, group, x, y):
+        super().__init__(group)
+        Lava.image = pygame.transform.scale(Lava.image, (50, 50))
+        self.lava_image = Lava.image
+        self.rect = self.lava_image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.mask = pygame.mask.from_surface(Lava.image)
+
+
+class Door_mingame(pygame.sprite.Sprite):
+    image = load_image('door.png')
+
+    def __init__(self, group, x, y):
+        super().__init__(group)
+        Door_mingame.image = pygame.transform.scale(Door_mingame.image, (50, 50))
+        self.lava_image = Door_mingame.image
+        self.rect = self.lava_image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.mask = pygame.mask.from_surface(Door_mingame.image)
 
 
 class Board:
@@ -66,6 +93,7 @@ class Board:
         self.cell_size = 50
         self.board = []
         self.board = load_level(f'lvl{lvl}.txt')
+        self.lvl = lvl
         self.width = len(self.board[0])
         self.height = len(self.board)
         self.all_sprites = group

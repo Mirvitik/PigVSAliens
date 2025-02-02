@@ -1,6 +1,6 @@
 import time
-from board import Board
-from hero import Hero, load_image
+from board import Board, Lava, Door_mingame
+from hero import Hero, load_image, HeroMiniGame
 import pygame
 from reg_window import reg_window
 import sys
@@ -25,8 +25,6 @@ def win(screen, num):  # num-переменная со счётом игрока
         for event in pygame.event.get():
             if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 sys.exit()
-            if pygame.key.get_pressed()[pygame.K_a]:
-                return
 
 
 def start_window(screen):
@@ -93,8 +91,7 @@ def start_window(screen):
 
 
 def lose(screen):  # функция выводит экран проигрыша
-    global all_sprites
-    global levels, lvl, board, size, hero
+    global all_sprites, levels, lvl, board, size, hero
     screen.fill(pygame.Color('black'))
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
@@ -102,7 +99,8 @@ def lose(screen):  # функция выводит экран проигрыша
     text_esc = font2.render('Нажмите клавишу "esc" для выхода из игры', True, pygame.Color('red'))
     text_f = font2.render('Нажмите клавишу "f" для перезапуска игры', True, pygame.Color('red'))
     screen.blit(text, (25, 25))
-    screen.blit(text_esc, (50, 200))
+    screen.blit(text_esc, (50, 175))
+    screen.blit(text_f, (50, 200))
     pygame.display.flip()
     running = True
     while running:
@@ -124,12 +122,67 @@ def lose(screen):  # функция выводит экран проигрыша
                 return
 
 
+def minigame():
+    global all_sprites, levels, lvl, board, size, hero
+    for el in all_sprites:
+        el.kill()
+    screen.fill(pygame.Color('Gray'))
+    all_sprites = pygame.sprite.Group()
+    lavasps = pygame.sprite.Group()
+    h = HeroMiniGame(all_sprites, load_image("pigs.png"), 0, 0, 'right')
+    for i in range(5):
+        Lava(lavasps, 50 * i, 100)
+    for i in range(6, 15):
+        Lava(lavasps, 50 * i, 100)
+    for i in range(1, 15):
+        Lava(lavasps, 50 * i, 200)
+    door = Door_mingame(all_sprites, 50, 250)
+    running = True
+    while running:
+        screen.fill(pygame.Color('Gray'))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            for lava in lavasps:
+                if pygame.sprite.collide_mask(h, lava):
+                    running = False
+            if pygame.sprite.collide_mask(h, door):
+                win(screen, 0)
+                running = False
+            if pygame.key.get_pressed()[pygame.K_d]:
+                h_old = h
+                h = HeroMiniGame(all_sprites, load_image("pigs.png"), min(screen.get_width() - 50, h_old.x + 5),
+                                 h_old.y, 'right')
+                h_old.kill()
+            if pygame.key.get_pressed()[pygame.K_a]:
+                h_old = h
+                h = HeroMiniGame(all_sprites, load_image("pigs.png"), max(h_old.x - 5, 0), h_old.y, 'left')
+                h_old.kill()
+            if pygame.key.get_pressed()[pygame.K_w]:
+                h_old = h
+                h = HeroMiniGame(all_sprites, load_image("pigs.png"), h_old.x, max(h_old.y - 5, 0), 'up')
+                h_old.kill()
+            if pygame.key.get_pressed()[pygame.K_s]:
+                h_old = h
+                h = HeroMiniGame(all_sprites, load_image("pigs.png"), h_old.x,
+                                 min(h_old.y + 5, screen.get_height() - 50), 'down')
+                h_old.kill()
+        all_sprites.update()
+        lavasps.update()
+        lavasps.draw(screen)
+        all_sprites.draw(screen)
+        pygame.display.flip()
+    lose(screen)
+
+
 def main(event, bomb=False):
     if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
-    if lvl >= 4:
+    if lvl >= 5:
         win(screen, 0)
+    if lvl == 4:
+        minigame()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
         try:  # если игрок захочет нажать на кнопки, когда пришелец занял его клетку
             hero_x, hero_y = board.where_hero()
@@ -296,7 +349,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if lvl >= 4:
+        if lvl == 4:
+            minigame()
+        if lvl >= 5:
             win(screen, 0)
         if event.type == ALIEN_EVENT:
             board.move_enemy()
