@@ -10,7 +10,7 @@ import json
 nick = None  # переменная с ником игрока
 
 
-def win(screen, num):  # num-переменная со счётом игрока
+def win(screen):  # num-переменная со счётом игрока
     global time_start, nickname
     screen.fill(pygame.Color('black'))
     font = pygame.font.Font(None, 50)
@@ -29,7 +29,8 @@ def win(screen, num):  # num-переменная со счётом игрока
         data = json.load(file)
     data = [[i, data[i]] for i in sorted(data, key=lambda x: data[x])][:10]
     print(data)
-    text_top = font2.render(f'ТОП 10 ИГРОКОВ:\n {"\n".join([' '.join([str(j[0]), str(j[1])]) for j in data])}', True, pygame.Color('yellow'))
+    text_top = font2.render(f'ТОП 10 ИГРОКОВ:\n {"\n".join([' '.join([str(j[0]), str(j[1])]) for j in data])}', True,
+                            pygame.Color('yellow'))
     screen.blit(text, (25, 25))
     screen.blit(text_num, (50, 175))
     screen.blit(text_top, (50, 200))
@@ -39,7 +40,6 @@ def win(screen, num):  # num-переменная со счётом игрока
         for event in pygame.event.get():
             if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 sys.exit()
-
 
 
 def start_window(screen):
@@ -130,7 +130,8 @@ def lose(screen):  # функция выводит экран проигрыша
                     minigame()
                 else:
                     board = Board(screen, all_sprites, lvl=levels[lvl])
-                    hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
+                    hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'),
+                                0, 0)
                     size = (len(board.board[0]) * 50, len(board.board) * 50)
                     screen = pygame.display.set_mode(size)
 
@@ -154,7 +155,9 @@ def minigame():
         Lava(lavasps, 50 * i, 100)
     for i in range(1, 15):
         Lava(lavasps, 50 * i, 200)
-    door = Door_mingame(all_sprites, 50, 250)
+    for i in range(14):
+        Lava(lavasps, 50 * i, 300)
+    door = Door_mingame(all_sprites, 50, 350)
     running = True
     while running:
         screen.fill(pygame.Color('Gray'))
@@ -165,7 +168,7 @@ def minigame():
                 if pygame.sprite.collide_mask(h, lava):
                     running = False
             if pygame.sprite.collide_mask(h, door):
-                win(screen, 0)
+                win(screen)
                 running = False
             if pygame.key.get_pressed()[pygame.K_d]:
                 h_old = h
@@ -198,7 +201,7 @@ def main(event, bomb=False):
         pygame.quit()
         sys.exit()
     if lvl >= 6:
-        win(screen, 0)
+        win(screen)
     if lvl == 5:
         minigame()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
@@ -371,7 +374,7 @@ while running:
         if lvl == 5:
             minigame()
         if lvl >= 6:
-            win(screen, 0)
+            win(screen)
         if event.type == ALIEN_EVENT:
             board.move_enemy()
         if event.type == pygame.KEYDOWN:
