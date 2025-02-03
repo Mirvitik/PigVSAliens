@@ -350,9 +350,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if lvl == 4:
+        if lvl == 5:
             minigame()
-        if lvl >= 5:
+        if lvl >= 6:
             win(screen, 0)
         if event.type == ALIEN_EVENT:
             board.move_enemy()
@@ -360,7 +360,10 @@ while running:
             if event.key == pygame.K_SPACE:
                 main(event, bomb=True)
             else:
-                hero_x, hero_y = board.where_hero()
+                try:
+                    hero_x, hero_y = board.where_hero()
+                except TypeError:
+                    lose(screen)
                 exit_xy = board.where_exit()
                 if exit_xy and ((event.key == pygame.K_d and any(bool((hero_x + 1, hero_y) == xy) for xy in exit_xy)) or
                                 (event.key == pygame.K_s and any(bool((hero_x, hero_y + 1) == xy) for xy in exit_xy)) or
