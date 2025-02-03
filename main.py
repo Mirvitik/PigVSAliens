@@ -346,7 +346,7 @@ start_window(screen)  # показываем стортовое окно
 time_start = time.time()
 all_sprites = pygame.sprite.Group()
 levels = [1, 2, 3, 4, 5, 6, 7]
-lvl = 4
+lvl = 0
 board = Board(screen, all_sprites, lvl=levels[lvl])
 hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
 size = (len(board.board[0]) * 50, len(board.board) * 50)
