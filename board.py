@@ -105,6 +105,8 @@ class Board:
         self.posy = (0, 0)
 
     def render(self):
+        if self.lvl == 6:
+            return
         for y in range(self.height):
             for x in range(self.width):
                 Cell(self.all_sprites, x * self.cell_size, y * self.cell_size)

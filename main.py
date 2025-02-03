@@ -126,14 +126,17 @@ def lose(screen):  # функция выводит экран проигрыша
                 all_sprites = pygame.sprite.Group()
                 levels = [1, 2, 3, 4, 5, 6, 7]
                 lvl = 0
-                board = Board(screen, all_sprites, lvl=levels[lvl])
-                hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
-                size = (len(board.board[0]) * 50, len(board.board) * 50)
-                screen = pygame.display.set_mode(size)
+                if lvl == 5:
+                    minigame()
+                else:
+                    board = Board(screen, all_sprites, lvl=levels[lvl])
+                    hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
+                    size = (len(board.board[0]) * 50, len(board.board) * 50)
+                    screen = pygame.display.set_mode(size)
 
-                ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
-                delay = 1000
-                pygame.time.set_timer(ALIEN_EVENT, delay)
+                    ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
+                    delay = 1000
+                    pygame.time.set_timer(ALIEN_EVENT, delay)
                 return
 
 
@@ -194,9 +197,9 @@ def main(event, bomb=False):
     if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
-    if lvl >= 5:
+    if lvl >= 6:
         win(screen, 0)
-    if lvl == 4:
+    if lvl == 5:
         minigame()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
         try:  # если игрок захочет нажать на кнопки, когда пришелец занял его клетку
@@ -392,9 +395,12 @@ while running:
     all_sprites.draw(screen)
     if new_lvl:
         lvl += 1
-        board = Board(screen, all_sprites, lvl=levels[lvl])
-        size = (len(board.board[0]) * 50, len(board.board) * 50)
-        screen = pygame.display.set_mode(size)
+        if lvl == 5:
+            minigame()
+        else:
+            board = Board(screen, all_sprites, lvl=levels[lvl])
+            size = (len(board.board[0]) * 50, len(board.board) * 50)
+            screen = pygame.display.set_mode(size)
         new_lvl = False
     pygame.display.flip()
 pygame.quit()
