@@ -341,6 +341,7 @@ ALIEN_EVENT = 30  # создаём событие того, что врагу н
 delay = 1000
 pygame.time.set_timer(ALIEN_EVENT, delay)
 
+start_time = time.time()
 running = True
 new_lvl = False
 while running:

@@ -3,6 +3,7 @@ from alien import Alien
 import os
 import sys
 import pygame
+import random
 from stone import Stone
 from bomb import Bomb
 from boom import Boom
@@ -31,6 +32,7 @@ def load_level(filename):
         level_map = [line.strip() for line in mapFile]
     in_strings = list(map(lambda x: [i for i in x.ljust(max(map(len, level_map)), '.')], level_map))
     out = []
+    stones = []
     for el in in_strings:
         new_el = []
         for value in el:
@@ -41,10 +43,11 @@ def load_level(filename):
                 new_value = 2
             elif value == '+':
                 new_value = 3
-            elif value == 'Q':
-                new_value = 6
+                stones.append((in_strings.index(el), el.index(value)))
             new_el.append(new_value)
         out.append(new_el)
+    end = random.choice(stones)
+    out[end[0]][end[1]] = 6
     return out
 
 
