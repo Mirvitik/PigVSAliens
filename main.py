@@ -5,17 +5,31 @@ import pygame
 from reg_window import reg_window
 import sys
 import pygame_gui
+import json
 
 nick = None  # переменная с ником игрока
 
 
 def win(screen, num):  # num-переменная со счётом игрока
+    global time_start, nickname
     screen.fill(pygame.Color('black'))
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
     text = font.render('ВЫ ВЫЙГРАЛИ!', True, pygame.Color('yellow'))
-    text_num = font2.render(f'ВАШ СЧЁТ: {num}', True, pygame.Color('yellow'))
-    text_top = font2.render(f'ТОП 10 ИГРОКОВ:', True, pygame.Color('yellow'))
+    t = round(time.time() - time_start, 2)
+    text_num = font2.render(f'ВАШ СЧЁТ: {t} секунд', True, pygame.Color('yellow'))
+    with open('data/top.json') as file:
+        data = json.load(file)
+        print(data)
+    print(data)
+    data[nickname] = t
+    with open('data/top.json', 'w') as file:
+        json.dump(data, file, ensure_ascii=False)
+    with open('data/top.json') as file:
+        data = json.load(file)
+    data = [[i, data[i]] for i in sorted(data, key=lambda x: data[x])][:10]
+    print(data)
+    text_top = font2.render(f'ТОП 10 ИГРОКОВ:\n {"\n".join([' '.join([str(j[0]), str(j[1])]) for j in data])}', True, pygame.Color('yellow'))
     screen.blit(text, (25, 25))
     screen.blit(text_num, (50, 175))
     screen.blit(text_top, (50, 200))
@@ -25,6 +39,7 @@ def win(screen, num):  # num-переменная со счётом игрока
         for event in pygame.event.get():
             if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 sys.exit()
+
 
 
 def start_window(screen):
@@ -325,13 +340,13 @@ fps = 165
 clock = pygame.time.Clock()
 pygame.init()
 screen.fill(pygame.Color('Black'))
-reg_window()
+nickname = reg_window()
 screen.fill((0, 0, 0))
 start_window(screen)  # показываем стортовое окно
-
+time_start = time.time()
 all_sprites = pygame.sprite.Group()
 levels = [1, 2, 3, 4, 5, 6, 7]
-lvl = 0
+lvl = 4
 board = Board(screen, all_sprites, lvl=levels[lvl])
 hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
 size = (len(board.board[0]) * 50, len(board.board) * 50)

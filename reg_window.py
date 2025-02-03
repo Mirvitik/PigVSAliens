@@ -158,7 +158,7 @@ def reg_window():
         button1.draw(screen)
         pg.display.flip()
         clock.tick(30)
-
+    return input_box1.text
 
 # if __name__ == '__main__':
 #     main()
