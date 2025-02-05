@@ -58,7 +58,7 @@ def start_window(screen):
         text='Выйти из игры',
         manager=manager
     )
-    text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, pygame.Color('green'))
+    text_help = font2.render('Перемещайтесь по WASD, когда начнёте игру\nПробел-поставить мину', True, pygame.Color('green'))
     screen.blit(text, (25, 25))
     screen.blit(text_help, (25, 175))
     text_x = width // 2 - text.get_width() // 2
@@ -96,7 +96,7 @@ def start_window(screen):
             manager.process_events(event)
         screen.fill(pygame.Color('black'))
         screen.blit(text, (25, 25))
-        text_help = font2.render('Введите свой никнейм, нажмите Enter и начните игру', True, color)
+        text_help = font2.render('Перемещайтесь по WASD, когда начнёте игру\nПробел-поставить мину', True, color)
         screen.blit(text_help, (25, 175))
         pygame.draw.rect(screen, (0, 255, 0), (text_x - 10, text_y - 10,
                                                text_w + 20, text_h + 20), 5)
@@ -379,7 +379,10 @@ while running:
             board.move_enemy()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                main(event, bomb=True)
+                try:
+                    main(event, bomb=True)
+                except TypeError:
+                    lose(screen)
             else:
                 try:
                     hero_x, hero_y = board.where_hero()
