@@ -106,7 +106,7 @@ def start_window(screen):
 
 
 def lose(screen):  # функция выводит экран проигрыша
-    global all_sprites, levels, lvl, board, size, hero
+    global all_sprites, levels, lvl, board, size, hero, gamesound
     screen.fill(pygame.Color('black'))
     font = pygame.font.Font(None, 50)
     font2 = pygame.font.Font(None, 25)
@@ -126,6 +126,8 @@ def lose(screen):  # функция выводит экран проигрыша
                 all_sprites = pygame.sprite.Group()
                 levels = [1, 2, 3, 4, 5, 6, 7]
                 lvl = 0
+                gamesound.stop()
+                gamesound.play(loops=-1)
                 if lvl == 5:
                     minigame()
                 else:
@@ -352,7 +354,7 @@ start_window(screen)  # показываем стортовое окно
 time_start = time.time()
 all_sprites = pygame.sprite.Group()
 levels = [1, 2, 3, 4, 5, 6, 7]
-lvl = 0
+lvl = 3
 board = Board(screen, all_sprites, lvl=levels[lvl])
 hero = Hero(all_sprites, board.where_hero()[0], board.where_hero()[1], 50, load_image('pigs.png'), 0, 0)
 size = (len(board.board[0]) * 50, len(board.board) * 50)
@@ -361,7 +363,9 @@ screen = pygame.display.set_mode(size)
 ALIEN_EVENT = 30  # создаём событие того, что врагу надо переместиться
 delay = 1000
 pygame.time.set_timer(ALIEN_EVENT, delay)
-
+gamesound = pygame.mixer.Sound('data/song.mp3')  # загрузка еще музыки
+gamesound.set_volume(1)
+gamesound.play(loops=-1)
 start_time = time.time()
 running = True
 new_lvl = False
