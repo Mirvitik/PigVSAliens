@@ -1,4 +1,4 @@
-('C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\build\\main\\PYZ-00.pyz',
+('C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\build\\main\\PYZ-00.pyz',
  [('__future__',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\__future__.py',
@@ -60,7 +60,7 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\_threading_local.py',
    'PYMODULE'),
   ('alien',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\alien.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\alien.py',
    'PYMODULE'),
   ('argparse',
    'C:\\Program '
@@ -211,13 +211,13 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\bisect.py',
    'PYMODULE'),
   ('board',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\board.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\board.py',
    'PYMODULE'),
   ('bomb',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\bomb.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\bomb.py',
    'PYMODULE'),
   ('boom',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\boom.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\boom.py',
    'PYMODULE'),
   ('bz2',
    'C:\\Program '
@@ -360,7 +360,7 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\doctest.py',
    'PYMODULE'),
   ('door',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\door.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\door.py',
    'PYMODULE'),
   ('email',
    'C:\\Program '
@@ -483,7 +483,7 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\hashlib.py',
    'PYMODULE'),
   ('hero',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\hero.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\hero.py',
    'PYMODULE'),
   ('hmac',
    'C:\\Program '
@@ -1575,7 +1575,7 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\random.py',
    'PYMODULE'),
   ('reg_window',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\reg_window.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\reg_window.py',
    'PYMODULE'),
   ('rlcompleter',
    'C:\\Program '
@@ -1638,7 +1638,7 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\\Lib\\statistics.py',
    'PYMODULE'),
   ('stone',
-   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliens\\stone.py',
+   'C:\\Users\\zombi\\PycharmProjects\\PigVSAliensNew2\\stone.py',
    'PYMODULE'),
   ('string',
    'C:\\Program '
